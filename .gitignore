@@ -2,3 +2,5 @@
 *.multires
 .ipynb_checkpoints/
 *.xlsx
+*.tex
+*.png
