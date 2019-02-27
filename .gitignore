@@ -1,6 +1,7 @@
 *.DS_Store
 *.multires
-.ipynb_checkpoints/
+*.ipynb_checkpoints/
 *.xlsx
 *.tex
 *.png
+*.idea
