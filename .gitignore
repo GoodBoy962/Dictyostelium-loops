@@ -1,8 +1,11 @@
 *.DS_Store
 *.multires
 *.ipynb_checkpoints/
-*.xlsx
 *.tex
 *.png
 *.idea
+/utils
 *.npy
+dicty/arrs/*
+rao/coolers/*
+rao/arrs/*
