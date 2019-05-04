@@ -34,7 +34,7 @@ def generate_and_save_arrays_for_chromosome(path, cooler, chr, is_balanced = Tru
 
     is_not_balanced_arr = ''
     if not is_balanced:
-        is_not_balanced = '_not_balanced'
+        is_not_balanced_arr = '_not_balanced'
     
     np.save(path + resolution + '_' + chr + is_not_balanced_arr, mat)
     np.save(path + resolution + '_' + chr + '_log' + is_not_balanced_arr, np.log(mat))
