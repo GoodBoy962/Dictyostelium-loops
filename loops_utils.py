@@ -45,7 +45,7 @@ def generate_and_save_arrays_for_chromosome(path, cooler, chr, is_balanced = Tru
 ## Plots
 ##################################
 
-def plot_HiC(arr, figsize=(15,15)):
+def plot_HiC(arr, figsize=(15,15), name=None):
     '''
         Plot Hi-С map in blue-red colormap
         Function returns ax to add smth in the figure if needed
@@ -54,6 +54,10 @@ def plot_HiC(arr, figsize=(15,15)):
     ax = fig.add_subplot(111)
     im = ax.matshow(arr, cmap='RdBu_r')
     fig.colorbar(im)
+
+    if name is not None:
+        fig.savefig('pictures/' + name + '.png')
+
     return ax
 
 def get_loop_with_window(arr, loop_x_centroid, loop_y_centroid, window_size=13):
@@ -101,38 +105,42 @@ def resize_image_arr(original_image, width, height):
     return resized_image
 
 ##################################
-## Densities
+## Scaling
 ##################################
 
-def calc_densities_mean(arr):
+def calc_scaling_mean(arr):
     '''
         calculate mean of each diagonal
-        mean of each diagonal corresponds for the density for each genomic size step
+        mean of each diagonal corresponds for the scaling for each genomic size step
     '''
-    density = np.zeros(arr.shape[0])
+    scaling = np.zeros(arr.shape[0])
     for i in range(arr.shape[0]):
-        density[i] = np.nanmean(np.diagonal(arr, i))
+        scaling[i] = np.nanmean(np.diagonal(arr, i))
         
-    return density
+    return scaling
 
-def calc_densities_sum(arr):
+def calc_scaling_sum(arr):
     '''
         calculate sum of each diagonal
-        mean of each diagonal corresponds for the density for each genomic size step
+        mean of each diagonal corresponds for the scaling for each genomic size step
     '''
-    density = np.zeros(arr.shape[0])
+    scaling = np.zeros(arr.shape[0])
     for i in range(arr.shape[0]):
-        density[i] = np.nansum(np.diagonal(arr, i))
+        scaling[i] = np.nansum(np.diagonal(arr, i))
         
-    return density
+    return scaling
 
-def plot_densities(densities):
+def plot_scaling_values(scaling_values, name=None):
     '''
-    plot all densities on a one plot in double-log coordinates
+    plot all scaling values on a one plot in double-log coordinates
     '''
     fig = plt.figure()
     ax = plt.axes()
 
-    for density in densities:
-        plt.plot(np.log(range(density.shape[0])), np.log(density), 'b');
+    for scaling in scaling_values:
+        plt.plot(np.log(range(scaling.shape[0])), np.log(scaling), 'b')
+
+    if name is not None:
+        fig.savefig('pictures/' + name + '.png')
+
     plt.show()
