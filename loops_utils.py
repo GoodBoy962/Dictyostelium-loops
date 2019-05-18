@@ -45,7 +45,7 @@ def generate_and_save_arrays_for_chromosome(path, cooler, chr, is_balanced = Tru
 ## Plots
 ##################################
 
-def plot_HiC(arr, figsize=(15,15), name=None):
+def plot_HiC(arr, figsize=(15,15), name=None, is_loop=False, is_loop_window=False):
     '''
         Plot Hi-С map in blue-red colormap
         Function returns ax to add smth in the figure if needed
@@ -54,6 +54,15 @@ def plot_HiC(arr, figsize=(15,15), name=None):
     ax = fig.add_subplot(111)
     im = ax.matshow(arr, cmap='RdBu_r')
     fig.colorbar(im)
+    
+    if is_loop:
+        ax.axvline(x=math.floor(arr.shape[0]/2), color='k', linestyle='--', lw=3)
+        plt.text(-1.6, math.floor(arr.shape[0]/2) - 1.8, 'left anchor', rotation=90, size=20)
+        ax.axhline(y=math.floor(arr.shape[1]/2), color='k', linestyle='--', lw=3)
+        plt.text(math.floor(arr.shape[1]/2) - 1.8, arr.shape[1] + 0.5, 'right anchor', size=20)
+
+    if is_loop_window:
+        None
 
     if name is not None:
         fig.savefig('pictures/' + name + '.png')
