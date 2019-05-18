@@ -62,7 +62,12 @@ def plot_HiC(arr, figsize=(15,15), name=None, is_loop=False, is_loop_window=Fals
         plt.text(math.floor(arr.shape[1]/2) - 1.8, arr.shape[1] + 0.5, 'right anchor', size=20)
 
     if is_loop_window:
-        None
+        ax.axvline(x=math.floor(arr.shape[0]/3), color='k', linestyle='--', lw=3)
+        ax.axvline(x=2*math.floor(arr.shape[0]/3), color='k', linestyle='--', lw=3)
+        plt.text(-8, math.floor(arr.shape[0]/3)-5, 'left anchor', rotation=90, size=20)
+        ax.axhline(y=math.floor(arr.shape[1]/3), color='k', linestyle='--', lw=3)
+        ax.axhline(y=2*math.floor(arr.shape[1]/3), color='k', linestyle='--', lw=3)
+        plt.text(-8, 2 * math.floor(arr.shape[0]/3)-5, 'right anchor', rotation=90, size=20)
 
     if name is not None:
         fig.savefig('pictures/' + name + '.png')
