@@ -13,3 +13,4 @@ rao/arrs/*
 course_work/*
 */~$*
 __pycache__/*
+*/__pycache__/*
