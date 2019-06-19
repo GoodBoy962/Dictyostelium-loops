@@ -1,3 +1,6 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
 from keras.models import Model
 from keras.layers import Conv2D, MaxPooling2D, Input, UpSampling2D, concatenate, Activation, Conv2DTranspose
 from keras.layers import BatchNormalization, Dropout
@@ -63,8 +66,8 @@ def get_unet(input_img, n_filters=16, dropout=0.5, batchnorm=True):
     model = Model(inputs=[input_img], outputs=[outputs])
     return model
 
-def plot_model_scores(results):
-    plt.figure(figsize=(5, 5))
+def plot_model_scores(results, figsize=(5,5), name=None):
+    plt.figure(figsize=figsize)
     plt.title('Learning curve')
     plt.plot(results.history['loss'], label='loss')
     plt.plot(results.history['val_loss'], label='val_loss')
@@ -72,3 +75,6 @@ def plot_model_scores(results):
     plt.xlabel('Epochs')
     plt.ylabel('log_loss')
     plt.legend()
+
+    if name is not None:
+        fig.savefig('pictures/' + name + '.png')

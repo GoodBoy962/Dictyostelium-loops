@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-loops_info = pd.read_excel('dicty_loop_positions_Chr1_Chr6.xlsx')
+loops_info = pd.read_excel('dicty_loop_positions_Chr1_Chr5_Chr6.xlsx')
 loops_x = loops_info['Genomic bin, Left base'].values - 1
 loops_y = loops_info['Genomic bin, Right base'].values - 1
 
@@ -12,24 +12,24 @@ def substact_are_and_mask_and_save_to_tiff(start, end):
     '''
     area = arr[start:end, start:end]
     area_mask = mask[start:end, start:end]
-    
+
     area_im = Image.fromarray(area)
     area_im.save('dataset/images/' + chr + '_' + str(start) + '_' + str(end) + '.png')
-    
-    area_mask_im = Image.fromarray(area_mask)    
+
+    area_mask_im = Image.fromarray(area_mask)
     area_mask_im.save('dataset/masks/' + chr + '_' + str(start) + '_' + str(end) + 'label.png')
 
-def prepare_data(image_size, isLog = False, isNormOverDiagonals = True):
+def prepare_data(image_size, chromosomes = [1], is_log = False, is_norm_over_diagonals = True, is_mask_corner_peak = False, mask_window = 1):
     images = []
     masks = []
 
-    for chr_num in [1, 6]:
+    for chr_num in chromosomes:
         chr = 'chr' + str(chr_num)
-        
+
         path = 'arrs/2kb_' + chr
-        if isNormOverDiagonals:
+        if is_norm_over_diagonals:
             path += '_norm'
-        if isLog:
+        if is_log:
             path += '_log'
         path += '.npy'
 
@@ -38,8 +38,13 @@ def prepare_data(image_size, isLog = False, isNormOverDiagonals = True):
 
         # create mask array
         mask = np.zeros_like(arr)
-        for idx, x in enumerate(loops_x):
-            mask[x-1:loops_y[idx]-1, x-1:loops_y[idx]-1] = 1  
+        if not is_mask_corner_peak:
+            for idx, x in enumerate(loops_x):
+                mask[x:loops_y[idx], x:loops_y[idx]] = 1
+        else: 
+            for idx, x in enumerate(loops_x):
+                mask[x-mask_window:x+mask_window, loops_y[idx]-mask_window:loops_y[idx]+mask_window] = 1
+
 
         i = image_size
         step = image_size
@@ -71,5 +76,5 @@ def prepare_data(image_size, isLog = False, isNormOverDiagonals = True):
 
     X = np.array(images)
     y = np.array(masks)
-        
+
     return X,y

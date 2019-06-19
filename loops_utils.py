@@ -45,6 +45,48 @@ def generate_and_save_arrays_for_chromosome(path, cooler, chr, is_balanced = Tru
 ## Plots
 ##################################
 
+def plot_prediction_HiC(raw, raw_mask, pred, pred_t, image_size, is_log_HiC = True, figsize=(10,10), name=None):
+    '''
+        Plot 4 figures
+        raw - raw HiC
+        raw_mask - mask of raw HiC
+        pred - predicted probabilities
+        pred_t - predicted with threshold
+        image_size - size of the image
+        is_log_HiC - do or not to do log with raw HiC       
+    '''
+
+    raw = np.reshape(raw, (image_size,image_size))
+
+    if is_log_HiC:
+    	raw = np.log(raw)
+
+    raw_mask = np.reshape(raw_mask, (image_size,image_size))
+    pred = np.reshape(pred, (image_size,image_size))
+    pred_t = np.reshape(pred_t, (image_size,image_size))
+    
+    fig, axs = plt.subplots(2, 2, figsize=(10, 10))
+    fig.subplots_adjust(left=0.02, bottom=0.06, right=0.95, top=0.94, wspace=0.05)
+    
+    im1 = axs[0, 0].matshow(raw, cmap='RdBu_r')
+    axs[0,0].set_title('Hi-C')
+    fig.colorbar(im1, ax=axs[0,0])
+
+    im2 = axs[0, 1].matshow(raw_mask, cmap='RdBu_r')
+    axs[0,1].set_title('Mask')
+    fig.colorbar(im2, ax=axs[0,1])
+
+    im3 = axs[1, 0].matshow(pred, cmap='RdBu_r')
+    axs[1,0].set_title('Predicted probabilities')
+    fig.colorbar(im3, ax=axs[1,0])
+
+    im4 = axs[1, 1].matshow(pred_t, cmap='RdBu_r')
+    axs[1,1].set_title('Predicted probabilities with threshold')
+    fig.colorbar(im4, ax=axs[1,1])
+
+    if name is not None:
+        fig.savefig('pictures/' + name + '.png')
+
 def plot_HiC(arr, figsize=(15,15), name=None, is_loop=False, is_loop_window=False):
     '''
         Plot Hi-С map in blue-red colormap
@@ -79,10 +121,10 @@ def get_loop_with_window(arr, loop_x_centroid, loop_y_centroid, window_size=13):
         Substract loop as an array with center in loop_x_centroid, loop_y_centroid and window_size around it
         If loop cordinates are outside the array return zero array
     '''     
-    loop_window_size = math.ceil(window_size/2) + 1
-    loop_window = np.zeros((loop_window_size, loop_window_size))
+    # loop_window_size = math.ceil(window_size/2) + 1
+    loop_window = np.zeros((window_size, window_size))
     
-    if loop_x_centroid-math.floor(window_size/2) > 0 and loop_y_centroid-math.floor(window_size/2) > 0:
+    if loop_x_centroid-math.floor(window_size/2) > 0 and loop_y_centroid-math.floor(window_size/2) > 0 and loop_x_centroid+math.floor(window_size/2) < arr.shape[0] and loop_y_centroid+math.floor(window_size/2) < arr.shape[0]:
 
         loop_window = arr[loop_y_centroid-math.floor(window_size/2):loop_y_centroid+math.ceil(window_size/2), 
                           loop_x_centroid-math.floor(window_size/2):loop_x_centroid+math.ceil(window_size/2)]
