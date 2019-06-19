@@ -77,4 +77,4 @@ def plot_model_scores(results, figsize=(5,5), name=None):
     plt.legend()
 
     if name is not None:
-        fig.savefig('pictures/' + name + '.png')
+        plt.savefig('pictures/' + name + '.png')
