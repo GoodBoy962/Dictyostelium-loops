@@ -1,3 +1,3 @@
-Dicty & Rao loops
+# Dicty & Rao loops
 
-TODO
+Work around predicting loops on Hi-C maps
