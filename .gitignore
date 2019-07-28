@@ -1,16 +1,12 @@
 *.DS_Store
 *.multires
 *.ipynb_checkpoints/
-*.tex
-*.png
 *.idea
-/utils
 *.npy
 dicty/arrs/*
 *.cool
-*.multires
+utils/*
 rao/arrs/*
-course_work/*
 */~$*
 __pycache__/*
 */__pycache__/*
