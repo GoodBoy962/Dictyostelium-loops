@@ -77,7 +77,7 @@ def plot_prediction_HiC(raw, raw_mask, pred, pred_t, image_size, is_log_HiC=True
     pred = np.reshape(pred, (image_size, image_size))
     pred_t = np.reshape(pred_t, (image_size, image_size))
 
-    fig, axs = plt.subplots(2, 2, figsize=(10, 10))
+    fig, axs = plt.subplots(2, 2, figsize=figsize)
     fig.subplots_adjust(left=0.02, bottom=0.06, right=0.95, top=0.94, wspace=0.05)
 
     im1 = axs[0, 0].matshow(raw, cmap='RdBu_r')
